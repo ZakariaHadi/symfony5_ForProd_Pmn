@@ -57,7 +57,7 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
-ENTRYPOINT ["sh","./entrypoint.sh"]
+ENTRYPOINT ["sh","./entrypoint.prod.sh"]
 
 
 

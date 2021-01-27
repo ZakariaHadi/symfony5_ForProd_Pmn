@@ -24,7 +24,7 @@ services:
             - ./symfony/:/var/www/symfony/
         networks:
             - symfony_db_net
-        image: zakariadocker/symfonypmn
+        image: zakariadocker/symfonypmn:1.0.0
     nginx:
         build:
             context: .
@@ -36,7 +36,7 @@ services:
             - 80:80
         networks:
             - symfony_db_net
-        image: zakariadocker/nginx4symfony
+        image: zakariadocker/nginx4symfon:1.0.0
 volumes:
     db_app:
 
