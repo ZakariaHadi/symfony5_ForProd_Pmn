@@ -18,8 +18,20 @@ RUN docker-php-ext-install \
 # get composer wheels from the official link and installa it in the php bin locatin
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# specify the work directory
-WORKDIR /var/www/symfony
+
+# create the app user
+# purpose: => By default, Docker runs container processes as root inside of a container. 
+#             This is not a good practice for us since bad people "attackers" can gain root access to the Docker host 
+#             if they manage to break out of the container. If you're root in the container, you'll be root on the aws host.
+RUN addgroup -S app && adduser -S app -G app
+
+# create the appropriate directories
+ENV APP_HOME=/var/www/symfony
+RUN mkdir $APP_HOME
+
+# specify the workdirectory
+WORKDIR $APP_HOME
+
 
 ##### THIS BLOCK is not necessary in this moment since we already create the project packages and dirs#######
 # install symfony bundles && init the project.
@@ -35,9 +47,15 @@ WORKDIR /var/www/symfony
 ## install packages by using the composer.json file
 RUN composer install
 
+COPY ./docker/php/entrypoint.sh $APP_HOME
+ 
 
-# copy entrypoint.sh
-ADD ./docker/php/entrypoint.sh .
+ 
+# chown all the files to the app user
+RUN chown -R app:app $APP_HOME
+
+# change to the app user
+USER app
 
 ENTRYPOINT ["sh","./entrypoint.sh"]
 
