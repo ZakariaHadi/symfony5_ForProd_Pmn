@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+    db:
+        image: mysql:8.0
+        volumes:
+            - "db_app:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        ports:
+            - 127.0.0.1:3306:3306
+        networks:
+            - symfony_db_net
+    php:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        volumes:
+            - ./symfony/:/var/www/symfony/
+        networks:
+            - symfony_db_net
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        volumes:
+            - ./symfony/:/var/www/symfony/
+        ports:
+            - 80:80
+        networks:
+            - symfony_db_net
+
+volumes:
+    db_app:
+
+networks:
+    symfony_db_net:
