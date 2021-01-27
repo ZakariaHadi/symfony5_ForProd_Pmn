@@ -12,10 +12,21 @@ Our hub is composed from 3 nodes:
 
 There is an empty .env structure file without data in the file **.env.struct** || **./symfony/.env.struct**
 
+### Setting Environments up : 
+- All the configs for the dev env are set in the default confs files (docker-compose.yml && Dockerfile && nginx.conf ...)
+- The dockerfiles of all the services have the same configs for both environments.
+- **docker-compose.prod.yml** contains the sevices definitions for a prod env which doesn't need handling the build process from a Dockerfile since we have pushed already our images to the docker hub. so only the changed params are exported as a env params in the **.env.prod** file.
+- Deployment still in test since I have some connection issues with the aws provided load balancer.
+- **deploy.sh** is a used in the deployment stage to establish the ssh connection between the gitlab builder instance and the ec2 instance and launch the services with docker-compose. (see the **.gitlab-ci.yml** file)
 
+### Important :
+- The deployment pipeline is lanched from a gitlab build context so the deployment configuration is managed for a gitlab CI/CD. (just familiarisation issue :) )
+
+- The two repositories in github and gitlab are connected, and each push to the release-pre-prod branch will trigger the build/deploy stages pipelines in the gitlab ci/cd process.
 
 #### Still in the way :
-- add docekr.compose.prod.yml for prod testing.
-- separate composer from php server.
+- php Dockerfile => create a stage just for build dependencies and use it as builder layer just to copy the built wheels.
+- add unit tests for the symfony app.
+- finalize the deployement tests.
 
 
