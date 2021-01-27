@@ -18,6 +18,7 @@ There is an empty .env structure file without data in the file **.env.struct** |
 - **docker-compose.prod.yml** contains the sevices definitions for a prod env which doesn't need handling the build process from a Dockerfile since we have pushed already our images to the docker hub. so only the changed params are exported as a env params in the **.env.prod** file.
 - Deployment still in test since I have some connection issues with the aws provided load balancer.
 - **deploy.sh** is a used in the deployment stage to establish the ssh connection between the gitlab builder instance and the ec2 instance and launch the services with docker-compose. (see the **.gitlab-ci.yml** file)
+- **setup_env.sh** script is responsible for handling the environments vars from the repository CI/CD configuration in gitlab and passe it to **.env.prod** && **symfony/.env** files which are used as input env files in php/nginx services. (please lookup => docker-compose.prod.yml)
 
 ### Important :
 - The deployment pipeline is lanched from a gitlab build context so the deployment configuration is managed for a gitlab CI/CD. (just familiarisation issue :) )
