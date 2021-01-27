@@ -9,21 +9,7 @@ COPY docker/php/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
 RUN apt-get update && apt-get install -y \
     gnupg \
     g++ \
-    procps \
-    openssl \
-    git \
-    unzip \
-    zlib1g-dev \
-    libzip-dev \
-    libfreetype6-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libicu-dev  \
-    libonig-dev \
-    libxslt1-dev \
-    acl \
-    && echo 'alias sf="php bin/console"' >> ~/.bashrc
-
+    procps
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype 
 
 RUN docker-php-ext-install \
@@ -49,6 +35,11 @@ WORKDIR /var/www/symfony
 ## install packages by using the composer.json file
 RUN composer install
 
+
+# copy entrypoint.sh
+ADD ./docker/php/entrypoint.sh .
+
+ENTRYPOINT ["sh","./entrypoint.sh"]
 
 
 

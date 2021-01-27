@@ -12,12 +12,14 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         ports:
             - 127.0.0.1:3306:3306
+        restart: always
         networks:
             - symfony_db_net
     php:
         build:
             context: .
             dockerfile: docker/php/Dockerfile
+        restart: always
         volumes:
             - ./symfony/:/var/www/symfony/
         networks:
@@ -26,6 +28,7 @@ services:
         build:
             context: .
             dockerfile: docker/nginx/Dockerfile
+        restart: always
         volumes:
             - ./symfony/:/var/www/symfony/
         ports:
