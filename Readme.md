@@ -28,6 +28,6 @@ There is an empty .env structure file without data in the file **.env.struct** |
 #### Still in the way :
 - php Dockerfile => create a stage just for build dependencies and use it as builder layer just to copy the built wheels.
 - add unit tests for the symfony app.
-- finalize the deployement tests.
+- finalize the deployement ( add a mailing log service)
 
 
